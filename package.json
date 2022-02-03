@@ -1,7 +1,7 @@
 {
 	"name": "new-site-repo-start",
 	"description": "A Starting Template for New Website Repositories",
-	"version": "0.2.0",
+	"version": "1.0.0",
 	"repository": {
 		"type": "git",
 		"url": "http://git.labx.local/devops/new-site-repo-start.git"
