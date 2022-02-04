@@ -1,21 +1,32 @@
 {
-	"name": "new-site-repo-start",
-	"description": "A Starting Template for New Website Repositories",
-	"version": "1.0.0",
-	"repository": {
-		"type": "git",
-		"url": "http://git.labx.local/devops/new-site-repo-start.git"
-	},
-	"devDependencies": {
-		"grunt": "~0.4.2",
-		"grunt-contrib-watch": "~0.5.3",
-		"grunt-contrib-less": "~0.9.0",
-		"grunt-contrib-csslint": "~0.2.0",
-		"grunt-contrib-cssmin": "~0.8.0",
-		"grunt-contrib-uglify": "~0.3.2",
-		"grunt-checkrepo": "^0.1.0",
-		"grunt-contrib-jshint": "^0.10.0",
-		"grunt-git": "^0.2.14",
-		"jshint-stylish": "^0.4.0"
-	}
+  "name": "codevachon.github.io",
+  "version": "1.0.0",
+  "description": "Github IO Website",
+  "main": "index.js",
+  "repository": "git@github.com:CodeVachon/codevachon.github.io.git",
+  "author": "Christopher Vachon <code@christophervachon.com>",
+  "license": "MIT",
+  "scripts": {
+    "dev": "next"
+  },
+  "devDependencies": {
+    "@44north/prettier-config": "^1.1.0",
+    "@types/node": "^17.0.14",
+    "@types/react": "^17.0.39",
+    "autoprefixer": "^10.4.2",
+    "postcss": "^8.4.6",
+    "prettier": "^2.5.1",
+    "tailwindcss": "^3.0.18",
+    "typescript": "^4.5.5"
+  },
+  "dependencies": {
+    "@44north/classnames": "^0.1.0",
+    "@heroicons/react": "^1.0.5",
+    "axios": "^0.25.0",
+    "graphql": "^16.3.0",
+    "graphql-tag": "^2.12.6",
+    "next": "^12.0.10",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2"
+  }
 }
