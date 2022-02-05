@@ -7,7 +7,8 @@
   "author": "Christopher Vachon <code@christophervachon.com>",
   "license": "MIT",
   "scripts": {
-    "dev": "next"
+    "dev": "next",
+    "build": "next build && next export -o docs"
   },
   "devDependencies": {
     "@44north/prettier-config": "^1.1.0",
