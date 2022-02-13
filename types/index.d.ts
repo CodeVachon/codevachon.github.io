@@ -28,7 +28,24 @@ interface IGithubUser {
     location: string;
     websiteUrl: string;
     twitterUsername: string;
+    readMeRepo: IGitHubRepoObjects;
     pinnedItems: {
         nodes: IGithubRepo[];
+    };
+}
+
+interface IGitHubRepoObjects {
+    id: string;
+    name: string;
+    url: string;
+    branch: {
+        entries: {
+            name: string;
+            type: string;
+            object: {
+                byteSize: number;
+                text: string;
+            };
+        }[];
     };
 }

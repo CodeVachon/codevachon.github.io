@@ -5,8 +5,11 @@ import { GithubUserApi } from "./../utl";
 import { GetStaticProps } from "next";
 import Head from "next/head";
 
-import { TwitterIcon, GithubIcon, RepoCard, SidebarInfoItem } from "./../components";
+import { TwitterIcon, GithubIcon, RepoCard, SidebarInfoItem, Card } from "./../components";
 import { OfficeBuildingIcon, LocationMarkerIcon, LinkIcon } from "@heroicons/react/solid";
+
+import { marked } from "marked";
+import DOMPurify from "isomorphic-dompurify";
 
 interface IHomepageProps {
     data: {
@@ -135,13 +138,72 @@ function Homepage({ data }: IHomepageProps) {
                             </div>
                         </section>
                     </div>
-                    <ul className={new ClassNames(["flex flex-col space-y-4"]).list()}>
-                        {data.user.pinnedItems.nodes.map((repo) => (
-                            <li key={repo.url}>
-                                <RepoCard repo={repo} />
-                            </li>
-                        ))}
-                    </ul>
+                    <div className={new ClassNames(["flex flex-col space-y-8"]).list()}>
+                        {data.user.readMeRepo.branch.entries
+                            .filter((file) => new RegExp("readme.md", "i").test(file.name))
+                            .map((file) => (
+                                <Card
+                                    key={`${data.user.readMeRepo.name}${file.name}`}
+                                    className={new ClassNames(["flex flex-col"]).list()}
+                                >
+                                    <ul
+                                        className={new ClassNames([
+                                            "flex space-x-2",
+                                            "text-xs text-gray-500 font-mono"
+                                        ]).list()}
+                                    >
+                                        <li
+                                            data-delimiter=" /"
+                                            className={new ClassNames([
+                                                "after:content-[attr(data-delimiter)]"
+                                            ]).list()}
+                                        >
+                                            <a href={data.user.readMeRepo.url} target={"_blank"}>
+                                                {data.user.readMeRepo.name}
+                                            </a>
+                                        </li>
+                                        <li>
+                                            <a
+                                                href={[
+                                                    data.user.readMeRepo.url,
+                                                    "blob",
+                                                    "main",
+                                                    file.name
+                                                ].join("/")}
+                                                target={"_blank"}
+                                            >
+                                                {file.name}
+                                            </a>
+                                        </li>
+                                    </ul>
+                                    <article
+                                        className={new ClassNames([
+                                            "prose lg:prose-xl dark:prose-invert"
+                                        ]).list()}
+                                        dangerouslySetInnerHTML={{
+                                            __html: DOMPurify.sanitize(
+                                                marked.parse(file.object.text)
+                                            )
+                                        }}
+                                    />
+                                </Card>
+                            ))}
+
+                        <h3
+                            className={new ClassNames([
+                                "text-2xl font-bold font-sans capitalize"
+                            ]).list()}
+                        >
+                            Top Repositories
+                        </h3>
+                        <ul className={new ClassNames(["flex flex-col space-y-4"]).list()}>
+                            {data.user.pinnedItems.nodes.map((repo) => (
+                                <li key={repo.url}>
+                                    <RepoCard repo={repo} />
+                                </li>
+                            ))}
+                        </ul>
+                    </div>
                 </div>
             </section>
         </>
@@ -163,6 +225,25 @@ const getStaticProps: GetStaticProps = async (context) => {
                     location
                     websiteUrl
                     twitterUsername
+                    readMeRepo: repository(name: $user) {
+                        id
+                        name
+                        url
+                        branch: object(expression: "main:") {
+                            ... on Tree {
+                                entries {
+                                    name
+                                    type
+                                    object {
+                                        ... on Blob {
+                                            byteSize
+                                            text
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
                     pinnedItems(first: 6, types: REPOSITORY) {
                         nodes {
                             ... on Repository {
